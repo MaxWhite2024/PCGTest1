@@ -166,6 +166,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 199fcf0b42fc5004e9046d0c088c02eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 100
+  height: 100
+  smoothness: 30
+  seed: 0
+  groundTile: {fileID: 11400000, guid: 4c833184104243249b3571cb20761d19, type: 2}
+  groundTileMap: {fileID: 304602593}
 --- !u!1 &304602590
 GameObject:
   m_ObjectHideFlags: 0

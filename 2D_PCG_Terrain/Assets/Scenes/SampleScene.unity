@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &217055066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +290,7 @@ Transform:
   m_GameObject: {fileID: 217055065}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.9, y: -43.7, z: 0}
+  m_LocalPosition: {x: -5.9, y: -26.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -345,7 +345,7 @@ MonoBehaviour:
   height: 100
   horizonHeight: 30
   smoothness: 25
-  seed: 0
+  seed: 1
   groundTile: {fileID: 11400000, guid: 4c833184104243249b3571cb20761d19, type: 2}
   groundTileMap: {fileID: 304602593}
 --- !u!1 &304602590

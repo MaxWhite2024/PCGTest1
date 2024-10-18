@@ -44,12 +44,12 @@ public class TwoDimTerrainGen : MonoBehaviour
         map = GenerateArray(width, height, true);
 
         //Generate horizon from created array
-        map = GenerateHorizon(map);
+        //map = GenerateHorizon(map);
 
         //Generate Terrain by shifting horizon line from created array with horizon
-        map = ShiftTerrainHorizontal(map);
+        //map = ShiftTerrainHorizontal(map);
 
-        //map = GenerateTerrain(map);
+        map = GenerateTerrain(map);
 
         //Render a tilemap using the array
         RenderMap(map, groundTileMap, groundTile);

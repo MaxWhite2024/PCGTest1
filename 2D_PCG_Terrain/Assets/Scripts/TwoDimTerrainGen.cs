@@ -12,6 +12,7 @@ public class TwoDimTerrainGen : MonoBehaviour
     [Header("Generation vars")]
     [SerializeField] private int width;
     [SerializeField] private int height;
+    [SerializeField] private int noiseAmplitude = 1;
     [SerializeField, Range(0, 100)] private int horizonHeight;
     [SerializeField] private float smoothness;
     [SerializeField] private float seed;
@@ -43,10 +44,10 @@ public class TwoDimTerrainGen : MonoBehaviour
         //Create an array to manipulate later
         map = GenerateArray(width, height, true);
 
-        //Generate horizon from created array
+        ////Generate horizon from created map
         //map = GenerateHorizon(map);
 
-        //Generate Terrain by shifting horizon line from created array with horizon
+        ////Generate Terrain by shifting horizon line from created array with horizon
         //map = ShiftTerrainHorizontal(map);
 
         map = GenerateTerrain(map);
@@ -99,13 +100,27 @@ public class TwoDimTerrainGen : MonoBehaviour
 
     private int[,] ShiftTerrainHorizontal(int[,] map)
     {
+        int perlinHeight;
+
         //get and store width and height of map
         int width = map.GetLength(0);
         int height = map.GetLength(1);
 
+        //iterate through each column,...
         for(int x = 0; x < width; x++)
         {
+            //calculate perlinHeight
+            //perlinHeight = Mathf.RoundToInt(Mathf.PerlinNoise(x / smoothness, seed) * height / 2);
+            perlinHeight = Mathf.RoundToInt(Mathf.PerlinNoise(x / smoothness, seed) * noiseAmplitude);
 
+            //get column
+            int[] column = GetColumn(map, x);
+
+            //shift column by perlin height
+            //column =
+
+            //set column
+            //map = SetColumn(map, x, column);
         }
 
         //return map
@@ -124,7 +139,9 @@ public class TwoDimTerrainGen : MonoBehaviour
 
         for (int x = 0; x < width; x++)
         {
+            Debug.Log(Mathf.RoundToInt(Mathf.PerlinNoise(x / smoothness, seed) * height / 2));
             perlinHeight = Mathf.RoundToInt(Mathf.PerlinNoise(x / smoothness, seed) * height / 2);
+            //perlinHeight = Mathf.RoundToInt(Mathf.PerlinNoise(x / smoothness, seed));
             perlinHeight += height / 2;
             for (int y = 0; y < perlinHeight; y++)
             {
@@ -184,7 +201,7 @@ public class TwoDimTerrainGen : MonoBehaviour
         return column;
     }
 
-    //helper functions courtesy of Alex Podles on https://stackoverflow.com/questions/27427527/how-to-get-a-complete-row-or-column-from-2d-array-in-c-sharp
+    //GetColumn and GetRow courtesy of Alex Podles on https://stackoverflow.com/questions/27427527/how-to-get-a-complete-row-or-column-from-2d-array-in-c-sharp
     public int[] GetColumn(int[,] matrix, int columnNumber)
     {
         return Enumerable.Range(0, matrix.GetLength(0))
@@ -197,5 +214,30 @@ public class TwoDimTerrainGen : MonoBehaviour
         return Enumerable.Range(0, matrix.GetLength(1))
                 .Select(x => matrix[rowNumber, x])
                 .ToArray();
+    }
+
+    //SetColumn and SetRow
+    public int[,] SetColumn(int[,] matrix, int columnNumber, int[] column)
+    {
+        int height = matrix.GetLength(1);
+
+        for (int y = 0; y < height; y++)
+        {
+            matrix[columnNumber, y] = column[y];
+        }
+
+        return matrix;
+    }
+
+    public int[,] SetRow(int[,] matrix, int rowNumber, int[] row)
+    {
+        int width = matrix.GetLength(0);
+
+        for (int x = 0; x < height; x++)
+        {
+            matrix[rowNumber, x] = row[x];
+        }
+
+        return matrix;
     }
 }

@@ -45,12 +45,12 @@ public class TwoDimTerrainGen : MonoBehaviour
         map = GenerateArray(width, height, true);
 
         ////Generate horizon from created map
-        //map = GenerateHorizon(map);
+        map = GenerateHorizon(map);
 
         ////Generate Terrain by shifting horizon line from created array with horizon
-        //map = ShiftTerrainHorizontal(map);
+        map = ShiftTerrainHorizontal(map);
 
-        map = GenerateTerrain(map);
+        //map = GenerateTerrain(map);
 
         //Render a tilemap using the array
         RenderMap(map, groundTileMap, groundTile);
@@ -117,10 +117,10 @@ public class TwoDimTerrainGen : MonoBehaviour
             int[] column = GetColumn(map, x);
 
             //shift column by perlin height
-            //column =
+            //column = Sh;
 
             //set column
-            //map = SetColumn(map, x, column);
+            map = SetColumn(map, x, column);
         }
 
         //return map
@@ -172,33 +172,42 @@ public class TwoDimTerrainGen : MonoBehaviour
         }
     }
 
-    private int[] ShiftHorizontal(int[] column, int amount)
+    private int[] ShiftColumn(int[] column, int amount)
     {
         int height = column.Length;
 
-        //int[] newColumn = column;
+        int[] newColumn = column;
 
-        //amount is positive,...
-        //if(amount > 0)
-        //{
-        //    //iterate downwards through newColumn and 
-        //    for (int y = height; y > 0; y--)
-        //    {
-        //        if()
-        //        column[y] = 
-        //    }
-        //}
-        ////else if amount is negative,...
-        //else if(amount < 0)
-        //{
-        //    for (int y = 0; y < height; y++)
-        //    {
+        //if amount is positive,...
+        if (amount > 0)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                //iterate downwards through newColumn and shift each element upwards
+                for (int y = height; y > 0; y--)
+                {
+                    //if y != 0, set column[y] = column[y - 1]
+                    //else y == 0, so set column[y] = 1 (solid block)
+                    column[y] = (y != 0) ? column[y] = column[y - 1] : 1;
+                }
+            }
+        }
+        //else if amount is negative,...
+        else if (amount < 0)
+        {
+            for (int y = 0; y < height; y++)
+            {
 
-        //    }
-        //}
+            }
+        }
 
         //return shifted column
         return column;
+    }
+
+    private int[] ShiftRow(int[] row, int amount)
+    {
+        return row;
     }
 
     //GetColumn and GetRow courtesy of Alex Podles on https://stackoverflow.com/questions/27427527/how-to-get-a-complete-row-or-column-from-2d-array-in-c-sharp

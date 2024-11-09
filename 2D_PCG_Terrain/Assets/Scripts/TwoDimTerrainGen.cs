@@ -44,12 +44,13 @@ public class TwoDimTerrainGen : MonoBehaviour
         //Create an array to manipulate later
         map = GenerateArray(width, height, true);
 
-        ////Generate horizon from created map
+        //Generate horizon from created map
         map = GenerateHorizon(map);
 
-        ////Generate Terrain by shifting horizon line from created array with horizon
+        //Generate Terrain by shifting horizon line from created array with horizon
         map = ShiftTerrainHorizontal(map);
 
+        //Generate Terrain by directly applying perlin noise
         //map = GenerateTerrain(map);
 
         //Render a tilemap using the array
@@ -104,11 +105,13 @@ public class TwoDimTerrainGen : MonoBehaviour
 
         //get and store width and height of map
         int width = map.GetLength(0);
+        Debug.Log(width);
         int height = map.GetLength(1);
 
         //iterate through each column,...
         for(int x = 0; x < width; x++)
         {
+            Debug.Log(x);
             //calculate perlinHeight
             //perlinHeight = Mathf.RoundToInt(Mathf.PerlinNoise(x / smoothness, seed) * height / 2);
             perlinHeight = Mathf.RoundToInt(Mathf.PerlinNoise(x / smoothness, seed) * noiseAmplitude);
@@ -117,7 +120,7 @@ public class TwoDimTerrainGen : MonoBehaviour
             int[] column = GetColumn(map, x);
 
             //shift column by perlin height
-            //column = Sh;
+            column = ShiftColumn(column, perlinHeight);
 
             //set column
             map = SetColumn(map, x, column);
@@ -149,7 +152,7 @@ public class TwoDimTerrainGen : MonoBehaviour
             }
         }
 
-        //
+        //return map with perlin noise generated terrain
         return map;
     }
 
@@ -176,7 +179,7 @@ public class TwoDimTerrainGen : MonoBehaviour
     {
         int height = column.Length;
 
-        int[] newColumn = column;
+        //int[] newColumn = column;
 
         //if amount is positive,...
         if (amount > 0)
@@ -184,7 +187,7 @@ public class TwoDimTerrainGen : MonoBehaviour
             for (int i = 0; i < amount; i++)
             {
                 //iterate downwards through newColumn and shift each element upwards
-                for (int y = height; y > 0; y--)
+                for (int y = height - 1; y > 0; y--)
                 {
                     //if y != 0, set column[y] = column[y - 1]
                     //else y == 0, so set column[y] = 1 (solid block)
@@ -195,9 +198,15 @@ public class TwoDimTerrainGen : MonoBehaviour
         //else if amount is negative,...
         else if (amount < 0)
         {
-            for (int y = 0; y < height; y++)
+            for (int i = 0; i < amount; i++)
             {
-
+                //iterate upwards through newColumn and shift each element downwards
+                for (int y = 0; y < height; y++)
+                {
+                    //if y != height - 1, set column[y] = column[y + 1]
+                    //else y == height - 1, so set column[y] = 0 (air)
+                    column[y] = (y != height - 1) ? column[y] = column[y + 1] : 0;
+                }
             }
         }
 
@@ -213,6 +222,7 @@ public class TwoDimTerrainGen : MonoBehaviour
     //GetColumn and GetRow courtesy of Alex Podles on https://stackoverflow.com/questions/27427527/how-to-get-a-complete-row-or-column-from-2d-array-in-c-sharp
     public int[] GetColumn(int[,] matrix, int columnNumber)
     {
+        Debug.Log("A");
         return Enumerable.Range(0, matrix.GetLength(0))
                 .Select(x => matrix[x, columnNumber])
                 .ToArray();
